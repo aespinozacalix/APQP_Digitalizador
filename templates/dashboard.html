@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | {{ profile }}</title>
+</head>
+<body>
+    <h1>Bienvenido, {{ username }}</h1>
+    <h2>Panel de Control ({{ profile }})</h2>
+    <hr>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul style="color: blue; list-style: none; padding: 0;">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% if profile == 'Administrador' %}
+        <p>Como Administrador (Perfil 3), tienes acceso completo.</p>
+        <p>Aquí irá el panel para gestionar usuarios y data maestra.</p>
+    {% elif profile == 'Supervisor' %}
+        <p>Como Supervisor (Perfil 2), debes revisar las auditorías en estado 'PENDIENTE_SUPERVISOR'.</p>
+        <p>Aquí irá el resumen de casos abiertos.</p>
+    {% elif profile == 'Auditor' %}
+        <p>Como Auditor (Perfil 1), tu tarea es completar la auditoría diaria asignada.</p>
+        <p>Aquí se mostrará la UBT que te toca auditar hoy.</p>
+        <p><a href="{{ url_for('nueva_auditoria') }}">➡️ Iniciar Auditoría Asignada</a></p>
+    {% endif %}
+
+    <hr>
+    <p><a href="{{ url_for('logout') }}">Cerrar Sesión</a></p>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Nueva Auditoría APQP</title>
+</head>
+<body>
+    <h1>Auditoría de Procesos (LPA)</h1>
+<hr>
+<div class="header-info">
+    <h3>Detalles de la Auditoría Asignada</h3>
+    <p><strong>Auditor:</strong> {{ session['username'] }}</p>
+    <p><strong>UBT Asignada:</strong> {{ asignacion.nombre_ubt }}</p>
+    <p><strong>Familia/Arnés:</strong> {{ asignacion.nombre_arnes }} ({{ asignacion.programa }})</p>
+    <p><strong>Supervisor Responsable:</strong> {{ asignacion.supervisor_nombre }}</p>
+</div>
+<hr>
+    
+    <form method="POST" action="/registrar_auditoria">
+
+        <h2>1. Datos de la Auditoría</h2>
+        
+        <label for="ubt_id">Línea de Trabajo (UBT):</label>
+        <select id="ubt_id" name="ubt_id" required>
+            <option value="">Seleccione una UBT</option>
+            {% for ubt in ubts %}
+                <option value="{{ ubt.id_ubt }}">{{ ubt.nombre_ubt }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <label for="auditor_nombre">Nombre del Auditor:</label>
+        <input type="text" id="auditor_nombre" name="auditor_nombre" required>
+        <br><br>
+
+        <h2>2. Checklist de Verificación</h2>
+        
+        <table border="1" cellpadding="10" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Categoría</th>
+                    <th>Pregunta</th>
+                    <th>CUMPLE</th>
+                    <th>NO CUMPLE</th>
+                    <th>N/A</th>
+                    <th>Comentarios</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for pregunta in checklist %}
+                <tr>
+                    <td>{{ pregunta.id_pregunta }}</td>
+                    <td>{{ pregunta.tipo_pregunta }}</td>
+                    <td>{{ pregunta.text_pregunta }}</td>
+                    
+                    <td><input type="radio" name="respuesta_{{ pregunta.id_pregunta }}" value="CUMPLE" required></td>
+                    <td><input type="radio" name="respuesta_{{ pregunta.id_pregunta }}" value="NO_CUMPLE" required></td>
+                    <td><input type="radio" name="respuesta_{{ pregunta.id_pregunta }}" value="NA" required></td>
+                    
+                    <td><input type="text" name="comentario_{{ pregunta.id_pregunta }}" placeholder="Opcional"></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" name="action" value="guardar">💾 Guardar Borrador</button>
+<button type="submit" name="action" value="enviar">✅ Enviar Auditoría</button>
+<button type="button" onclick="window.location.href='{{ url_for('dashboard') }}'">❌ Cancelar</button>
+        
+        <br><br>
+        <button type="submit">Finalizar y Registrar Auditoría</button>
+    </form>
+
+    <hr>
+    <p><a href="/">Volver a Inicio</a></p>
+</body>
+</html>

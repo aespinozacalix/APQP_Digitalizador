@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>APQP Digitalizador - Inicio</title>
+</head>
+<body>
+    <h1>Bienvenido al Digitalizador de Auditorías APQP</h1>
+    <p>¡El servidor de Python/Flask está listo para la acción!</p>
+
+    <h2>UBTs Activas para Auditoría:</h2>
+    
+    <ul>
+    {% for ubt in ubts %}
+        <li>{{ ubt.nombre_ubt }} (ID: {{ ubt.id_ubt }})</li>
+    {% endfor %}
+    </ul>
+    
+    <hr>
+    <p>La base de datos se conectó correctamente y extrajo los datos del Checklist Maestro.</p>
+</body>
+</html>
